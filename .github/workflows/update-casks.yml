@@ -1,0 +1,40 @@
+name: Update casks
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-casks:
+    runs-on: macos-26
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tap this repo in place
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/danielmitterdorfer"
+          ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/danielmitterdorfer/homebrew-tap"
+
+      - name: Check for and apply cask updates
+        run: |
+          for cask in Casks/*.rb; do
+            token="danielmitterdorfer/tap/$(basename "$cask" .rb)"
+            brew bump-cask-pr --write-only "$token" || echo "::notice::$token is already up to date"
+          done
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Update cask versions"
+          title: "Update cask versions"
+          branch: update-casks
+          delete-branch: true
