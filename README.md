@@ -1,16 +1,20 @@
-# Danielmitterdorfer Tap
+# danielmitterdorfer/tap
 
-## How do I install these formulae?
+Casks kept alive after being removed (or scheduled for removal) from the official Homebrew repos.
 
-`brew install danielmitterdorfer/tap/<formula>`
+## Casks
 
-Or `brew tap danielmitterdorfer/tap` and then `brew install <formula>`.
+- **logseq-og** — the file-based fork of Logseq at [logseq/og](https://github.com/logseq/og), not
+  packaged by Homebrew upstream.
+- **librewolf** — mirrors the official `homebrew-cask` formula, without the `disable!` scheduled for
+  2026-09-01.
 
-Or, in a `brew bundle` `Brewfile`:
+## Usage
 
-```ruby
-tap "danielmitterdorfer/tap"
-brew "<formula>"
+```
+brew tap danielmitterdorfer/tap
+brew install --cask danielmitterdorfer/tap/logseq-og
+brew install --cask danielmitterdorfer/tap/librewolf
 ```
 
 ## Documentation
