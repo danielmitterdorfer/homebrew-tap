@@ -17,6 +17,31 @@ brew install --cask danielmitterdorfer/tap/logseq-og
 brew install --cask danielmitterdorfer/tap/librewolf
 ```
 
+## Updating a cask to a new version
+
+Check whether upstream has released something newer:
+
+```
+brew livecheck --tap=danielmitterdorfer/tap
+```
+
+If a newer version is available, let Homebrew update the cask's `version`/`sha256` (and download
+URL, if it changed) for you, then commit the result:
+
+```
+brew bump-cask-pr --write-only --commit danielmitterdorfer/tap/logseq-og
+# or: danielmitterdorfer/tap/librewolf
+```
+
+`--write-only` (with `--commit`) makes the local file edit and commits it without opening a GitHub
+pull request — appropriate for a personal tap with no collaborators. Push the commit once you're
+happy with it:
+
+```
+cd "$(brew --repo danielmitterdorfer/tap)"
+git push
+```
+
 ## Documentation
 
 `brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
