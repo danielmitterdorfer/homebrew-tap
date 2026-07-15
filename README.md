@@ -11,7 +11,7 @@ Casks kept alive after being removed (or scheduled for removal) from the officia
 
 ## Usage
 
-```
+```bash
 brew tap danielmitterdorfer/tap
 brew install --cask danielmitterdorfer/tap/logseq-og
 brew install --cask danielmitterdorfer/tap/librewolf
@@ -21,14 +21,14 @@ brew install --cask danielmitterdorfer/tap/librewolf
 
 Check whether upstream has released something newer:
 
-```
+```bash
 brew livecheck --tap=danielmitterdorfer/tap
 ```
 
 If a newer version is available, let Homebrew update the cask's `version`/`sha256` (and download
 URL, if it changed) for you, then commit the result:
 
-```
+```bash
 brew bump-cask-pr --write-only --commit danielmitterdorfer/tap/logseq-og
 # or: danielmitterdorfer/tap/librewolf
 ```
@@ -37,7 +37,7 @@ brew bump-cask-pr --write-only --commit danielmitterdorfer/tap/logseq-og
 pull request — appropriate for a personal tap with no collaborators. Push the commit once you're
 happy with it:
 
-```
+```bash
 cd "$(brew --repo danielmitterdorfer/tap)"
 git push
 ```
