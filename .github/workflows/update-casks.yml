@@ -13,6 +13,11 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        # persist-credentials: false avoids a duplicate Authorization header with
+        # create-pull-request's own auth below; if a future step needs to push/fetch
+        # directly, it must configure its own git credentials.
+        with:
+          persist-credentials: false
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
