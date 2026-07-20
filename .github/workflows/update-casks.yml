@@ -22,7 +22,11 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Use brew-gh-api-token (not token) to avoid Homebrew configuring its own
+          # persistent global git credential, which stacks with create-pull-request's
+          # own credential below and causes a duplicate Authorization header on push.
+          # The tap repo is public, so no git credential is needed here anyway.
+          brew-gh-api-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tap this repo in place
         run: |
@@ -31,9 +35,17 @@ jobs:
 
       - name: Check for and apply cask updates
         run: |
-          for cask in Casks/*.rb; do
-            token="danielmitterdorfer/tap/$(basename "$cask" .rb)"
-            brew bump-cask-pr --write-only "$token" || echo "::notice::$token is already up to date"
+          # `brew bump-cask-pr` never determines the new version itself - it always
+          # requires an explicit --version/--url/--sha256, otherwise it errors with
+          # "Invalid usage: `--version` must not be empty." So we run `brew livecheck`
+          # first and only bump casks it reports as outdated.
+          outdated=$(brew livecheck --cask --tap=danielmitterdorfer/tap --newer-only --json --quiet)
+          echo "$outdated" | jq -c '.[]' | while read -r entry; do
+            cask=$(echo "$entry" | jq -r '.cask')
+            latest=$(echo "$entry" | jq -r '.version.latest')
+            token="danielmitterdorfer/tap/$cask"
+            echo "::notice::Bumping $token to $latest"
+            brew bump-cask-pr --write-only --version "$latest" "$token" || echo "::warning::Failed to bump $token to $latest"
           done
 
       - name: Open pull request
