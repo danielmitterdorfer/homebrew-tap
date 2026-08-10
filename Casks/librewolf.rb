@@ -1,7 +1,6 @@
 cask "librewolf" do
   arch arm: "arm64", intel: "x86_64"
-  artifact = on_system_conditional macos: "librewolf-#{version.tr(",", "-")}-macos-#{arch}-package.dmg",
-                                   linux: "librewolf-#{version.tr(",", "-")}-linux-#{arch}-appimage.AppImage"
+  os macos: "macos-#{arch}-package.dmg", linux: "linux-#{arch}-appimage.AppImage"
 
   version "153.0,3"
   sha256 arm:          "57a31fbb580ebd45d462280b246d3f7fc885e4367741f1ab54742c6b65284a91",
@@ -32,10 +31,10 @@ cask "librewolf" do
     ]
   end
   on_linux do
-    app_image artifact, target: "LibreWolf.AppImage"
+    app_image "librewolf-#{version.tr(",", "-")}-#{os}", target: "LibreWolf.AppImage"
   end
 
-  url "https://codeberg.org/api/packages/librewolf/generic/librewolf/#{version.tr(",", "-")}/#{artifact}",
+  url "https://codeberg.org/api/packages/librewolf/generic/librewolf/#{version.tr(",", "-")}/librewolf-#{version.tr(",", "-")}-#{os}",
       verified: "codeberg.org/api/packages/librewolf/generic/librewolf/"
   name "LibreWolf"
   desc "Web browser"
