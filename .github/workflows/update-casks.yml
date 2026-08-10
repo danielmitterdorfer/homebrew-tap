@@ -20,6 +20,9 @@ jobs:
           persist-credentials: false
 
       - name: Set up Homebrew
+        # This also taps this repo in place as danielmitterdorfer/tap: it detects the
+        # <owner>/homebrew-<name> naming convention and symlinks $GITHUB_WORKSPACE into
+        # Homebrew's Taps directory itself, so no separate manual tap step is needed.
         uses: Homebrew/actions/setup-homebrew@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
         with:
           # Use brew-gh-api-token (not token) to avoid Homebrew configuring its own
@@ -27,11 +30,6 @@ jobs:
           # own credential below and causes a duplicate Authorization header on push.
           # The tap repo is public, so no git credential is needed here anyway.
           brew-gh-api-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Tap this repo in place
-        run: |
-          mkdir -p "$(brew --repository)/Library/Taps/danielmitterdorfer"
-          ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/danielmitterdorfer/homebrew-tap"
 
       - name: Check for and apply cask updates
         run: |
