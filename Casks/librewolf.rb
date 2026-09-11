@@ -14,10 +14,10 @@ cask "librewolf" do
     shimscript = "#{staged_path}/librewolf.wrapper.sh"
     binary shimscript, target: "librewolf"
 
-    preflight do
-      File.write shimscript, <<~EOS
+    preflight_steps do
+      write_file "librewolf.wrapper.sh", <<~EOS
         #!/bin/sh
-        exec '#{appdir}/LibreWolf.app/Contents/MacOS/librewolf' "$@"
+        exec '{{appdir}}/LibreWolf.app/Contents/MacOS/librewolf' "$@"
       EOS
     end
 
@@ -34,8 +34,7 @@ cask "librewolf" do
     app_image "librewolf-#{version.tr(",", "-")}-#{os}", target: "LibreWolf.AppImage"
   end
 
-  url "https://codeberg.org/api/packages/librewolf/generic/librewolf/#{version.tr(",", "-")}/librewolf-#{version.tr(",", "-")}-#{os}",
-      verified: "codeberg.org/api/packages/librewolf/generic/librewolf/"
+  url "https://codeberg.org/api/packages/librewolf/generic/librewolf/#{version.tr(",", "-")}/librewolf-#{version.tr(",", "-")}-#{os}"
   name "LibreWolf"
   desc "Web browser"
   homepage "https://librewolf.net/"
