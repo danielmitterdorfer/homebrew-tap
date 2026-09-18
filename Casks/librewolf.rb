@@ -2,11 +2,11 @@ cask "librewolf" do
   arch arm: "arm64", intel: "x86_64"
   os macos: "macos-#{arch}-package.dmg", linux: "linux-#{arch}-appimage.AppImage"
 
-  version "153.0.4,1"
-  sha256 arm:          "4971d23a262a7414d6d7de2bc0449832a7e39cb341fc3f9b7388fe181fbf24a1",
-         intel:        "7d856314effa69e6955f1db4b2e94209b30b9b3757f324499db5e3acef0ae609",
-         arm64_linux:  "eb14f8b37b454f88da8bb194717608ca1354bb4ef822824f44ca3216ba0b2731",
-         x86_64_linux: "c1b836058ce9a626cb450644a5c1cedd94a6bf61df6c88c42cb114a782a44059"
+  version "155.0.1,1"
+  sha256 arm:          "3fec7bbacadf5c00d59a5e3af5bac104f7707476029a1d6c75f146e2295697f7",
+         intel:        "f9fd0a6530027be0be7fffe597715639cd9624bc5317b7c5f70deb9f6142ca24",
+         arm64_linux:  "0958cf16b83097b37960901fd9ee019e84e5604a970e42f129ea73945e525e55",
+         x86_64_linux: "f30b4eb32ea73e9fed5edc4649e157dad05d20619c14db20b1fce6ce2f4ba31c"
 
   on_macos do
     app "LibreWolf.app"
